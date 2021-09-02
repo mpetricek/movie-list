@@ -3,17 +3,15 @@ import { useState } from 'react'
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, useWindowDimensions } from 'react-native'
 import Header from './components/Header'
 import Item from './components/Item'
-export type Props = {
-    item: {
-        title: string
-        episode_number: string
-        description: string
-        poster: string
-    }
-}
+export type Movies = {
+    title: string
+    episode_number: string
+    description: string
+    poster: string
+}[]
+
 export default function App() {
-    const [movies, setMovies] = useState<[]>([])
-    const [sortRefresh, setSortRefresh] = useState(false)
+    const [movies, setMovies] = useState<Movies | []>([])
     const [grid, setGrid] = useState(false)
     const { width } = useWindowDimensions()
     useEffect(() => {
@@ -33,12 +31,11 @@ export default function App() {
     }, [])
 
     const onSortPress = () => {
-        setMovies(
-            movies.sort((a: { episode_number: string }, b: { episode_number: string }) => {
-                return a.episode_number ? -1 : b.episode_number ? 1 : 0
-            })
-        )
-        setSortRefresh(!sortRefresh)
+        const sorted = [...movies].sort((a, b) => {
+            return a.episode_number ? -1 : b.episode_number ? 1 : 0
+        })
+
+        setMovies(sorted)
     }
 
     return (
@@ -47,8 +44,8 @@ export default function App() {
             <FlatList
                 key={`${grid}-${width}`}
                 data={movies}
-                extraData={sortRefresh}
-                renderItem={({ item, index }) => <Item key={index} grid={grid} item={item} />}
+                extraData={movies}
+                renderItem={({ item }) => <Item key={item.title} grid={grid} item={item} />}
                 numColumns={grid && width >= 768 ? 2 : 1}
                 style={grid && { marginHorizontal: -8 }}
             />
