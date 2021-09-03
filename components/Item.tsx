@@ -1,15 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
-export type Props = {
-    item: {
-        title: string
-        episode_number: string
-        description: string
-        poster: string
-    }
-    grid: boolean
-}
-export default function Item({ item, grid }: Props) {
+import { MovieType } from '../shared/types/movie.type'
+
+export default function Item({ item, grid }: { item: MovieType; grid: boolean }) {
     return (
         <View style={[styles.item, grid && styles.gridItem]}>
             <Image

@@ -3,15 +3,13 @@ import { useState } from 'react'
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, useWindowDimensions } from 'react-native'
 import Header from './components/Header'
 import Item from './components/Item'
-export type Movies = {
-    title: string
-    episode_number: string
-    description: string
-    poster: string
-}[]
+
+import { MovieType } from './shared/types/movie.type'
+
+export type Movies = MovieType[]
 
 export default function App() {
-    const [movies, setMovies] = useState<Movies | []>([])
+    const [movies, setMovies] = useState<Movies>([])
     const [grid, setGrid] = useState(false)
     const { width } = useWindowDimensions()
     useEffect(() => {
